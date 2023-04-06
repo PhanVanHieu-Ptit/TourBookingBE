@@ -18,7 +18,7 @@ async function accountInsert(req, res, next) {
   }
   // check email đã có người đăng ký
   let [rows, fields] = await connection.execute(
-    `call managetour.sp_get_customer_by_email('${username}');`
+    `call railway.sp_get_customer_by_email('${username}');`
   );
   if (rows[0].length > 0) {
     return res.send(message("", false, "Email đã được đăng ký!"));
