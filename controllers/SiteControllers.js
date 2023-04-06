@@ -1,5 +1,5 @@
 const message = require("../utils/message");
-const { getListAddress } = require("../utils/Address");
+const { getListAddress } = require("../utils/address");
 var Status = require("../models/status_model");
 var Tour = require("../models/tour_model");
 const connection = require("../utils/connection");
