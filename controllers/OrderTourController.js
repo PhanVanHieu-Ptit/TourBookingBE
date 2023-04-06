@@ -143,7 +143,7 @@ class OrderTourController {
     const query = require("url").parse(req.url, true).query;
     const idCustomer = query.idCustomer;
     const idTour = query.idTour;
-    const status = query.status;
+    const status = query.status == "" ? "Tất cả" : query.status;
 
     let idStatus = -1;
     if (status != "Tất cả") {
