@@ -3,7 +3,7 @@ const dotenv = require("dotenv").config();
 
 const env = process.env;
 const dbConfig = {
-  host: env.DB_URI,
+  host: "containers-us-west-99.railway.app",
   database: env.DB_NAME,
   user: env.DB_UNAME,
   password: env.DB_UPASS,
