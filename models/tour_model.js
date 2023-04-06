@@ -26,11 +26,11 @@ const Tour = function (tour) {
 
 Tour.getAll = function (paging, status, result) {
   db.query(
-    `call managetour.sp_get_all_tour('${calculateStart(paging)}','${status}'); `
+    `call railway.sp_get_all_tour('${calculateStart(paging)}','${status}'); `
   )
     .then(([rows, fields]) => {
       console.log(
-        `call managetour.sp_get_all_tour('${calculateStart(
+        `call railway.sp_get_all_tour('${calculateStart(
           paging
         )}','${status}'); `
       );
@@ -44,7 +44,7 @@ Tour.getAll = function (paging, status, result) {
 
 Tour.getById = function (id) {
   return db
-    .query("call managetour.sp_get_tour_by_id(?);", [id])
+    .query("call railway.sp_get_tour_by_id(?);", [id])
     .then(([rows, fields]) => {
       return rows[0];
     })
@@ -56,7 +56,7 @@ Tour.getById = function (id) {
 
 Tour.getSlotsLeft = function (id) {
   return db
-    .query("call managetour.sp_get_tour_slots_left(?);", id)
+    .query("call railway.sp_get_tour_slots_left(?);", id)
     .then(([rows, fields]) => {
       return rows;
     })
@@ -68,7 +68,7 @@ Tour.getSlotsLeft = function (id) {
 
 Tour.findBykey = function (key, paging) {
   return db
-    .query("call managetour.sp_get_tour_by_key(?, ?);", [
+    .query("call railway.sp_get_tour_by_key(?, ?);", [
       "%" + key + "%",
       calculateStart(paging),
     ])
@@ -83,7 +83,7 @@ Tour.findBykey = function (key, paging) {
 
 Tour.getListFeatured = function (paging) {
   return db
-    .query("call managetour.sp_get_tour_feauted(?);", [calculateStart(paging)])
+    .query("call railway.sp_get_tour_feauted(?);", [calculateStart(paging)])
     .then(([rows, fields]) => {
       return rows[0];
     })
@@ -112,7 +112,7 @@ Tour.getListFeatured = function (paging) {
 Tour.changeStatus = async function (id, status, result) {
   if (status == "2") {
     const [rows1, fields1] = await db.query(
-      "call managetour.sp_get_id_tour_order(?);",
+      "call railway.sp_get_id_tour_order(?);",
       [id]
     );
     if (rows1[0].length != 0) {
@@ -121,7 +121,7 @@ Tour.changeStatus = async function (id, status, result) {
     }
   }
 
-  db.query("call managetour.sp_update_status_tour(?, ?);", [id, status])
+  db.query("call railway.sp_update_status_tour(?, ?);", [id, status])
     .then(([rows, fields]) => {
       console.log("row: ", rows);
       result(rows, true, "Cập nhật thành công!");
@@ -133,7 +133,7 @@ Tour.changeStatus = async function (id, status, result) {
 
 Tour.getNumberTourFeatured = function () {
   return db
-    .query("SELECT * FROM managetour.v_tour_number_featured;")
+    .query("SELECT * FROM railway.v_tour_number_featured;")
     .then(([rows, fields]) => {
       return rows;
     })
@@ -145,7 +145,7 @@ Tour.getNumberTourFeatured = function () {
 
 Tour.getNumberTour = function (status) {
   return db
-    .query(`call managetour.sp_number_tour('${status}');`)
+    .query(`call railway.sp_number_tour('${status}');`)
     .then(([rows, fields]) => {
       return rows[0];
     })

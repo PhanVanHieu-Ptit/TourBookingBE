@@ -16,7 +16,7 @@ const OrderTour = function (order) {
 };
 
 OrderTour.getAll = function (paging, result) {
-  db.query("call managetour.sp_get_all_order(?);", calculateStart(paging))
+  db.query("call railway.sp_get_all_order(?);", calculateStart(paging))
     .then(([rows, fields]) => {
       result(rows[0]);
     })
@@ -27,7 +27,7 @@ OrderTour.getAll = function (paging, result) {
 };
 
 OrderTour.getByIdTour = function (idTour, paging, result) {
-  db.query("call managetour.sp_get_order_by_id_tour(?, ?);", [
+  db.query("call railway.sp_get_order_by_id_tour(?, ?);", [
     idTour,
     calculateStart(paging),
   ])
@@ -41,7 +41,7 @@ OrderTour.getByIdTour = function (idTour, paging, result) {
 };
 
 OrderTour.findByStatus = function (status, paging, result) {
-  db.query("call managetour.sp_get_order_by_name_status(?, 'tourorder', ?);", [
+  db.query("call railway.sp_get_order_by_name_status(?, 'tourorder', ?);", [
     status,
     calculateStart(paging),
   ])
@@ -55,7 +55,7 @@ OrderTour.findByStatus = function (status, paging, result) {
 };
 
 OrderTour.getAllFollowCustomer = function (id, paging, result) {
-  db.query("call managetour.sp_get_order_follow_customer(?, ?);", [
+  db.query("call railway.sp_get_order_follow_customer(?, ?);", [
     id,
     calculateStart(paging),
   ])
@@ -68,7 +68,7 @@ OrderTour.getAllFollowCustomer = function (id, paging, result) {
 };
 
 OrderTour.getNumberOrderOfCustomer = function (idCustomer, idStatus, result) {
-  db.query("call managetour.sp_number_order_of_customer(?, ?);", [
+  db.query("call railway.sp_number_order_of_customer(?, ?);", [
     idCustomer,
     idStatus,
   ])
@@ -82,7 +82,7 @@ OrderTour.getNumberOrderOfCustomer = function (idCustomer, idStatus, result) {
 
 OrderTour.findByStatusFollowCustomer = function (id, status, paging, result) {
   db.query(
-    "call managetour.sp_get_order_by_status_follow_customer(?, ?, 'tourorder', ?);",
+    "call railway.sp_get_order_by_status_follow_customer(?, ?, 'tourorder', ?);",
     [id, status, calculateStart(paging)]
   )
     .then(([rows, fields]) => {
@@ -95,7 +95,7 @@ OrderTour.findByStatusFollowCustomer = function (id, status, paging, result) {
 
 OrderTour.getById = function (id) {
   return db
-    .query("call managetour.sp_get_order_by_id(?);", [id])
+    .query("call railway.sp_get_order_by_id(?);", [id])
     .then(([rows, fields]) => {
       return rows[0];
     })
@@ -107,7 +107,7 @@ OrderTour.getById = function (id) {
 
 OrderTour.findBykey = function (key, paging) {
   return db
-    .query("call managetour.sp_get_order_by_key(?, ?);", [
+    .query("call railway.sp_get_order_by_key(?, ?);", [
       "%" + key + "%",
       calculateStart(paging),
     ])
@@ -190,7 +190,7 @@ OrderTour.create = async function (data, result) {
     return;
   }
 
-  db.query("call managetour.sp_create_order(?, ?, ?, ?, ?);", [
+  db.query("call railway.sp_create_order(?, ?, ?, ?, ?);", [
     idCustomer,
     idTour,
     quantity,
@@ -211,7 +211,7 @@ OrderTour.create = async function (data, result) {
 OrderTour.update = async function (data, result) {
   const getTotalMoney = require("../utils/getTotalMoney");
   const totalMoney = await getTotalMoney(data.idTour, data.quantity);
-  db.query("call managetour.sp_update_order(?, ?, ?, ?, ?, ?);", [
+  db.query("call railway.sp_update_order(?, ?, ?, ?, ?, ?);", [
     data.idTourOrder,
     data.idCustomer,
     data.idTour,
@@ -233,7 +233,7 @@ OrderTour.confirm = function (id, idStatus) {
   // let cancelDate = "";
   // if (idStatus == 10) cancelDate = ", cancelDate=NOW()";
   return db
-    .query("call managetour.sp_update_status_order(?, ?);", [idStatus, id])
+    .query("call railway.sp_update_status_order(?, ?);", [idStatus, id])
     .then(([rows, fields]) => {
       console.log(rows);
       return rows;
@@ -247,7 +247,7 @@ OrderTour.confirm = function (id, idStatus) {
 OrderTour.getNumberTourOrder = function (idStatus) {
   console.log("idStatus: ", idStatus);
   return db
-    .query("call managetour.sp_num_tour_order(?);", [idStatus])
+    .query("call railway.sp_num_tour_order(?);", [idStatus])
     .then(([rows, fields]) => {
       return rows[0];
     })

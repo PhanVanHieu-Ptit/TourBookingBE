@@ -203,7 +203,7 @@ class TourController {
   async add(req, res, next) {
     try {
       let [rows, fields] = await connection.execute(
-        "call managetour.sp_get_staff_by_email(?);",
+        "call railway.sp_get_staff_by_email(?);",
         [req.body.email]
       );
       let idStaffCreate = rows[0][0].idStaff;
@@ -233,7 +233,7 @@ class TourController {
       );
       console.log("rows: ", rows);
       tourPictures.forEach((e) => {
-        connection.execute("call managetour.sp_add_image_tour(?, ?);", [
+        connection.execute("call railway.sp_add_image_tour(?, ?);", [
           rows.insertId,
           e,
         ]);
@@ -251,7 +251,7 @@ class TourController {
 
     try {
       let [rows, fields] = await connection.execute(
-        "call managetour.sp_get_tour_by_id(?);",
+        "call railway.sp_get_tour_by_id(?);",
         [idTour]
       );
 
@@ -260,7 +260,7 @@ class TourController {
       }
 
       [rows, fields] = await connection.execute(
-        "call managetour.sp_check_tour_exist_customer(?); ",
+        "call railway.sp_check_tour_exist_customer(?); ",
         [idTour]
       );
       console.log("row123: ", rows);
@@ -289,17 +289,17 @@ class TourController {
         featured,
         tourPictures,
       } = req.body;
-      await connection.execute("call managetour.sp_delete_image_tour(?);", [
+      await connection.execute("call railway.sp_delete_image_tour(?);", [
         idTour,
       ]);
       tourPictures.forEach((imageUrl) => {
-        connection.execute("call managetour.sp_add_image_tour(?, ?);", [
+        connection.execute("call railway.sp_add_image_tour(?, ?);", [
           idTour,
           imageUrl,
         ]);
       });
       [rows, fields] = await connection.execute(
-        "call managetour.sp_update_tour(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+        "call railway.sp_update_tour(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
         [
           name,
           startDate,

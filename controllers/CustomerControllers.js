@@ -5,18 +5,18 @@ class AccountControllers {
     let { name, phoneNumber, imageUrl, address, email } = req.body;
     try {
       let [rows, fields] = await connection.execute(
-        "call managetour.sp_update_customer(?, ?, ?, ?);",
+        "call railway.sp_update_customer(?, ?, ?, ?);",
         [name, phoneNumber, address, email]
       );
 
       if (imageUrl) {
         await connection.execute(
-          "call managetour.sp_update_image_customer(?, ?);",
+          "call railway.sp_update_image_customer(?, ?);",
           [imageUrl, email]
         );
       }
       [rows, fields] = await connection.execute(
-        "call managetour.sp_get_customer_by_email(?);",
+        "call railway.sp_get_customer_by_email(?);",
         [email]
       );
 

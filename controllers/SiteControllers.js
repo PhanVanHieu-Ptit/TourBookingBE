@@ -27,12 +27,12 @@ class SiteControllers {
       let rows, fields;
       if (req.body.role == "customer")
         [rows, fields] = await connection.execute(
-          "call managetour.sp_get_customer_by_email(?);",
+          "call railway.sp_get_customer_by_email(?);",
           [email]
         );
       else
         [rows, fields] = await connection.execute(
-          "call managetour.sp_get_staff_by_email(?);",
+          "call railway.sp_get_staff_by_email(?);",
           [email]
         );
 
@@ -47,7 +47,7 @@ class SiteControllers {
       let rows, fields;
       if (req.body.role == "admin") {
         [rows, fields] = await connection.execute(
-          "SELECT * FROM managetour.v_staff_number;"
+          "SELECT * FROM railway.v_staff_number;"
         );
         return res.send(message(rows[0], true, "Thành công!"));
       } else return res.send(message([], false, "Không có quyền truy cập!"));
@@ -84,17 +84,17 @@ class SiteControllers {
     const year = req.query.year;
     try {
       let [statisticRevenue, f1] = await connection.query(
-        "call managetour.sp_statistic_revenue(?);",
+        "call railway.sp_statistic_revenue(?);",
         year
       );
       statisticRevenue = statisticRevenue[0];
       let [statisticPerson, f2] = await connection.query(
-        "call managetour.sp_statistic_person(?);",
+        "call railway.sp_statistic_person(?);",
         year
       );
       statisticPerson = statisticPerson[0];
       let [statisticDestination, f23] = await connection.query(
-        "call managetour.sp_statistic_destination(?);",
+        "call railway.sp_statistic_destination(?);",
         year
       );
       statisticDestination = statisticDestination[0];
