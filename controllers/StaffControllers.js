@@ -9,7 +9,7 @@ class StaffController {
     res.send(message([], true, "Staff"));
   }
   async getListStaff(req, res) {
-    const key = req.query.key || "";
+    const key = req.query.key == undefined ? "" : req.query.key;
     const paging = req.query.paging ? req.query.paging : 1;
     let [rows, fields] = await connection.execute(
       `call railway.sp_get_list_staff_by_key('%${key}%',${calculateStart(
