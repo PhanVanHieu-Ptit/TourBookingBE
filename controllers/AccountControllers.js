@@ -49,11 +49,17 @@ class AccountControllers {
       console.log("sign-in: " + username + " " + password);
 
       if (type == "gmail") {
-        // Verify token using secret key
-        const decoded = jwt.verify(username, process.env.JWT_SECRET);
-        username = decoded.email;
-        if (username == undefined || username == "")
+        if (!username)
           return res.send(message("", false, "Đăng nhập thất bại!"));
+        try {
+          // Verify token using secret key
+          const decoded = jwt.verify(username, process.env.JWT_SECRET);
+          username = decoded.email;
+          if (username == undefined || username == "")
+            return res.send(message("", false, "Đăng nhập thất bại!"));
+        } catch (error) {
+          return res.send(message("", false, "Đăng nhập thất bại!"));
+        }
       }
       //check valid data form
       else if (!username || !password) {
