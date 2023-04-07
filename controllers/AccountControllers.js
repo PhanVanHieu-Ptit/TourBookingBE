@@ -55,6 +55,7 @@ class AccountControllers {
           // Verify token using secret key
           const decoded = jwt.verify(username, process.env.JWT_SECRET);
           username = decoded.email;
+          password = 0;
           if (username == undefined || username == "")
             return res.send(message("", false, "Đăng nhập thất bại!"));
         } catch (error) {
