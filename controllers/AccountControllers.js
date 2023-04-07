@@ -50,7 +50,7 @@ class AccountControllers {
 
       if (type == "gmail") {
         // Verify token using secret key
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(username, process.env.JWT_SECRET);
         username = decoded.email;
         if (username == undefined || username == "")
           return res.send(message("", false, "Đăng nhập thất bại!"));
