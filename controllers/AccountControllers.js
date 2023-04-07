@@ -124,7 +124,8 @@ class AccountControllers {
         )
       );
     } catch (error) {
-      return res.send(message(error, false));
+      console.log(error);
+      return res.send(message(error, false, "Đăng nhập thất bại do có lỗi!"));
     }
   }
   async changePassword(req, res) {
