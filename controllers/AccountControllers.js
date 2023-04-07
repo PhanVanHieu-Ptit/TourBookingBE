@@ -4,6 +4,7 @@ const { encode, compare } = require("../utils/my-bcrypt");
 const { getToken, getRefeshToken } = require("../utils/token");
 const path = require("path");
 const { sendChangePassMail } = require("../utils/mail");
+const jwt = require("jsonwebtoken");
 class AccountControllers {
   async signUp(req, res, next) {
     let { name, email, password, phoneNumber, imageUrl, address } = req.body;
@@ -43,11 +44,19 @@ class AccountControllers {
   }
   async signIn(req, res) {
     try {
-      const { username, password } = req.body;
+      let { username, password, type } = req.body;
       console.log(req.body);
       console.log("sign-in: " + username + " " + password);
+
+      if (type == "gmail") {
+        // Verify token using secret key
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        username = decoded.email;
+        if (username == undefined || username == "")
+          return res.send(message("", false, "Đăng nhập thất bại!"));
+      }
       //check valid data form
-      if (!username || !password) {
+      else if (!username || !password) {
         return res.send(
           message("", false, "Tên đăng nhập và mật khẩu không được để trống!")
         );
@@ -61,7 +70,10 @@ class AccountControllers {
 
       console.log("rows: ", rows);
 
-      if (rows[0].length == 0 || !compare(password, rows[0][0].password)) {
+      if (
+        rows[0].length == 0 ||
+        (!compare(password, rows[0][0].password) && type != "gmail")
+      ) {
         return res.send(message("", false, "Sai tên đăng nhập hoặc mật khẩu!"));
       }
       const role = rows[0][0].role;
@@ -205,9 +217,9 @@ class AccountControllers {
 
   // [POST] /account/token
   async token(req, res) {
-    const { email } = req.body;
+    const email = req.body.email;
     console.log(email);
-    if (email === undefined || email === "")
+    if (email === undefined || email == "")
       return res.send(message({}, false, "Lấy token thất bại!"));
     const token = getToken(email, true);
     return res.send(message({ token }, true, "Lấy token thành công!"));
