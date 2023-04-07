@@ -143,11 +143,10 @@ class OrderTourController {
     const query = require("url").parse(req.url, true).query;
     const idCustomer = query.idCustomer;
     const idTour = query.idTour;
-    const status =
-      query.status == "" || query.status == undefined ? "Tất cả" : query.status;
+    const status = query.status;
 
     let idStatus = -1;
-    if (status != "Tất cả") {
+    if (status != "Tất cả" && status != undefined) {
       let response = await Status.getByName(status, "tourorder");
       idStatus = response[0].idStatus;
     }
