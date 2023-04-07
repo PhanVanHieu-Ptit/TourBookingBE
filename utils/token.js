@@ -1,6 +1,6 @@
 function getToken(email, mailChangePassword = false, role = "customer") {
   let minutes = 1200;
-  if (mailChangePassword) minutes = 50;
+  if (mailChangePassword) minutes = 5;
   require("dotenv").config();
   var jwt = require("jsonwebtoken");
   var token = jwt.sign(

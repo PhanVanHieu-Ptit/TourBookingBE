@@ -202,5 +202,14 @@ class AccountControllers {
       return res.send(message({ token }, true, "Refesh token thành công!"));
     });
   }
+
+  // [POST] /account/token
+  async token(req, res) {
+    const { email } = req.body;
+    console.log(email);
+    if (email) return res.send(message({}, false, "Lấy token thất bại!"));
+    const token = getToken(email, true);
+    return res.send(message({ token }, true, "Lấy token thành công!"));
+  }
 }
 module.exports = new AccountControllers();
