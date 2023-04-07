@@ -55,7 +55,7 @@ class AccountControllers {
           // Verify token using secret key
           const decoded = jwt.verify(username, process.env.JWT_SECRET);
           username = decoded.email;
-          password = 0;
+
           if (username == undefined || username == "")
             return res.send(message("", false, "Đăng nhập thất bại!"));
         } catch (error) {
@@ -79,7 +79,7 @@ class AccountControllers {
 
       if (
         rows[0].length == 0 ||
-        (!compare(password, rows[0][0].password) && type != "gmail")
+        (type != "gmail" && !compare(password, rows[0][0].password))
       ) {
         return res.send(message("", false, "Sai tên đăng nhập hoặc mật khẩu!"));
       }
