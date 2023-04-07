@@ -207,7 +207,8 @@ class AccountControllers {
   async token(req, res) {
     const { email } = req.body;
     console.log(email);
-    if (email) return res.send(message({}, false, "Lấy token thất bại!"));
+    if (email === undefined || email === "")
+      return res.send(message({}, false, "Lấy token thất bại!"));
     const token = getToken(email, true);
     return res.send(message({ token }, true, "Lấy token thành công!"));
   }
