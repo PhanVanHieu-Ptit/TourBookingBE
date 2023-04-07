@@ -7,7 +7,8 @@ const { sendChangePassMail } = require("../utils/mail");
 const jwt = require("jsonwebtoken");
 class AccountControllers {
   async signUp(req, res, next) {
-    let { name, email, password, phoneNumber, imageUrl, address } = req.body;
+    let { name, email, password, phoneNumber, imageUrl, address, type } =
+      req.body;
 
     try {
       //pre-process data
@@ -29,6 +30,13 @@ class AccountControllers {
         "call railway.sp_get_customer_by_email(?);",
         [email]
       );
+
+      if (type == "gmail") {
+        const token = getToken(email, true);
+        const rs = await sendChangePassMail(email, token);
+        if (!rs.response.includes("OK")) console.log("Send mail fail!");
+      }
+
       // await connection.commit();
       return res.send(
         message(

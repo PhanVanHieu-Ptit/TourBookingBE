@@ -1,8 +1,13 @@
 const message = require("../utils/message");
 const connection = require("../utils/connection");
 async function accountInsert(req, res, next) {
-  let { username, password } = req.body;
+  let { username, password, type } = req.body;
   if (req.body.email) username = req.body.email;
+  if (type == "gmail") {
+    password = Math.random().toString(36).slice(2, 10);
+    req.body.password = password;
+  }
+
   console.log("accountInsert: ", username, password);
   if (!username || !password) {
     return res.send(
