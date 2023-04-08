@@ -81,22 +81,31 @@ class SiteControllers {
   }
 
   async statistic(req, res, next) {
-        const year = req.query.year;
-        const type = req.query.type;
-        try {
-            let result = [],
-                feild = [];
-            if (type == 'revenue')
-                [result, feild] = (await connection.query('call managetour.sp_statistic_revenue(?);', year))[0];
-            else if (type == 'person')
-                [result, feild] = (await connection.query('call managetour.sp_statistic_person(?);', year))[0];
-            else if (type == 'destination')
-                [result, feild] = (await connection.query('call managetour.sp_statistic_destination(?);', year))[0];
-            res.send(message(result));
-        } catch (error) {
-            res.send(message([], false, error.message));
-        }
+    const year = req.query.year;
+    const type = req.query.type;
+    try {
+      let result = [],
+        feild = [];
+      if (type == "revenue")
+        [result, feild] = (
+          await connection.query("call railway.sp_statistic_revenue(?);", year)
+        )[0];
+      else if (type == "person")
+        [result, feild] = (
+          await connection.query("call railway.sp_statistic_person(?);", year)
+        )[0];
+      else if (type == "destination")
+        [result, feild] = (
+          await connection.query(
+            "call railway.sp_statistic_destination(?);",
+            year
+          )
+        )[0];
+      res.send(message(result));
+    } catch (error) {
+      res.send(message([], false, error.message));
     }
+  }
 }
 
 module.exports = new SiteControllers();
