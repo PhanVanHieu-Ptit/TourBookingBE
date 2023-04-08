@@ -90,22 +90,16 @@ class SiteControllers {
       if (type == "destination")
         [result.destination, feild] = (
           await connection.query(
-            "call managetour.sp_statistic_destination(?);",
+            "call railway.sp_statistic_destination(?);",
             year
           )
         )[0];
       else {
         [result.revenue, feild] = (
-          await connection.query(
-            "call managetour.sp_statistic_revenue(?);",
-            year
-          )
+          await connection.query("call railway.sp_statistic_revenue(?);", year)
         )[0];
         [result.person, feild] = (
-          await connection.query(
-            "call managetour.sp_statistic_person(?);",
-            year
-          )
+          await connection.query("call railway.sp_statistic_person(?);", year)
         )[0];
         result.totalRevenue = result.revenue.reduce((a, b) => a + b.value, 0);
         result.totalPerson = result.person.reduce((a, b) => a + b.value, 0);
