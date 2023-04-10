@@ -353,6 +353,19 @@ class OrderTourController {
       return res.send(message(error.message, false));
     }
   };
+    getBill = async (req, res) => {
+        try {
+            let [rows, field] = await connection.execute('call managetour.sp_get_bill(?);', [req.query.idTourOrder]);
+            if (rows[0][0])
+                rows[0][0].qr =
+                    `https://api.qrserver.com/v1/create-qr-code/?` +
+                    `size=${req.query.QRSize ?? 200}x${req.query.QRSize ?? 200}&` +
+                    `data=${rows[0][0].idTourOrder}_${rows[0][0].idCustomer}_${rows[0][0].idTour}`;
+            return res.send(message(rows[0]));
+        } catch (error) {
+            return res.send(message(error.message, false));
+        }
+    };
 }
 
 module.exports = new OrderTourController();
