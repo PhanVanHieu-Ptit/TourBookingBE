@@ -6,7 +6,7 @@ const orderController = require('../controllers/OrderTourController');
 const {authenticateToken} = require('../middlewares/authentication');
 
 // orderController.index;
-router.get('/get-bill', orderController.getBill);
+router.get('/get-bill', authenticateToken, orderController.getBill);
 router.get('/number-order', authenticateToken, orderController.getNumberOrder);
 router.get('/list', authenticateToken, orderController.filter);
 router.get('/ordered-tour', authenticateToken, orderController.orderedTour);
