@@ -137,12 +137,12 @@ OrderTour.create = async function (data, result) {
   }
 
   //check exist of customer
-  // const [customer] = await Customer.getById(id);
+  const [customer] = await Customer.getById(id);
 
-  // if (customer == undefined) {
-  //   result([], false, "Khách hàng không tồn tại!");
-  //   return;
-  // }
+  if (customer == undefined) {
+    result([], false, "Khách hàng không tồn tại!");
+    return;
+  }
 
   //check exist of tour
   const [tour] = await Tour.getById(idTour);
@@ -174,15 +174,15 @@ OrderTour.create = async function (data, result) {
   }
 
   //check customer exist least one order orther
-  // const [numberOrder, fields] = await db.query(
-  //   "SELECT count(*) as currentNumber FROM `tourorder` where idCustomer = ? and idTour = ?",
-  //   [idCustomer, idTour]
-  // );
+  const [numberOrder, fields] = await db.query(
+    "SELECT count(*) as currentNumber FROM `tourorder` where idCustomer = ? and idTour = ?",
+    [idCustomer, idTour]
+  );
 
-  // if (numberOrder[0].currentNumber > 0) {
-  //   result([], false, "Bạn đã đặt tour này rồi!");
-  //   return;
-  // }
+  if (numberOrder[0].currentNumber > 0) {
+    result([], false, "Bạn đã đặt tour này rồi!");
+    return;
+  }
 
   const totalMoney = await getTotalMoney(data.idTour, data.quantity);
   if (!totalMoney) {
