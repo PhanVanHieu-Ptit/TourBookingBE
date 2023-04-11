@@ -175,7 +175,7 @@ OrderTour.create = async function (data, result) {
 
   //check customer exist least one order orther
   const [numberOrder, fields] = await db.query(
-    "SELECT count(*) as currentNumber FROM `tourorder` where idCustomer = ? and idTour = ?",
+    "SELECT count(*) as currentNumber FROM `tourorder` where idCustomer = ? and idTour = ? and (idStatus==8 || idStatus==9)",
     [idCustomer, idTour]
   );
 
