@@ -67,10 +67,16 @@ OrderTour.getAllFollowCustomer = function (id, paging, result) {
     });
 };
 
-OrderTour.getNumberOrderOfCustomer = function (idCustomer, idStatus, result) {
-  db.query("call railway.sp_number_order_of_customer(?, ?);", [
+OrderTour.getNumberOrderOfCustomer = function (
+  idCustomer,
+  idStatus,
+  idTour,
+  result
+) {
+  db.query("call railway.sp_number_order_of_customer(?, ?,?);", [
     idCustomer,
     idStatus,
+    idTour,
   ])
     .then(([rows, fields]) => {
       result(rows[0], true);
@@ -174,10 +180,10 @@ OrderTour.create = async function (data, result) {
   }
 
   //check customer exist least one order orther
-  const [numberOrder, fields] = await db.query(
-    "SELECT count(*) as currentNumber FROM `tourorder` where idCustomer = ? and idTour = ? and (idStatus==8 || idStatus==9)",
-    [idCustomer, idTour]
-  );
+  // const [numberOrder, fields] = await db.query(
+  //   "SELECT count(*) as currentNumber FROM `tourorder` where idCustomer = ? and idTour = ? and (idStatus==8 || idStatus==9)",
+  //   [idCustomer, idTour]
+  // );
 
   if (numberOrder[0].currentNumber > 0) {
     result([], false, "Bạn đã đặt tour này rồi!");
