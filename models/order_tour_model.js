@@ -185,10 +185,10 @@ OrderTour.create = async function (data, result) {
   //   [idCustomer, idTour]
   // );
 
-  if (numberOrder[0].currentNumber > 0) {
-    result([], false, "Bạn đã đặt tour này rồi!");
-    return;
-  }
+  // if (numberOrder[0].currentNumber > 0) {
+  //   result([], false, "Bạn đã đặt tour này rồi!");
+  //   return;
+  // }
 
   const totalMoney = await getTotalMoney(data.idTour, data.quantity);
   if (!totalMoney) {
