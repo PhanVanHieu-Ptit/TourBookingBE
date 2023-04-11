@@ -334,6 +334,7 @@ class OrderTourController {
     getBill = async (req, res) => {
         try {
             let [rows, field] = await connection.execute('call railway.sp_get_bill(?);', [req.query.idTourOrder]);
+
             if (req.body.idCustomer && req.body.idCustomer != rows[0][0].idCustomer) {
                 return res.send(message('', false, 'Không có quyền truy cập!'));
             }
